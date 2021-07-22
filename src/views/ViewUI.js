@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Modal, Button, Form, InputGroup, FormControl } from 'react-bootstrap'
+import React, { Fragment, useState } from 'react'
+import { Row, Col, Modal, Button, Form, InputGroup, FormControl } from 'react-bootstrap'
 
 import ToDoList from './ToDoList'
 import data from '../assests/JSON/data.json'
@@ -19,8 +19,7 @@ const ViewUI = () => {
         list.unshift({ ...newToDo, id: Math.random() })
 
         setToDoList(list)
-        setNewToDo({ task: '', description: '' })
-        setShowModal(false)
+        onModalHide()
     }
 
     const fieldHandler = event => {
@@ -29,6 +28,20 @@ const ViewUI = () => {
 
         toDo[id] = value
         setNewToDo(toDo)
+    }
+
+    const dateHandler = event => {
+        const { value } = event.target
+        let toDo = { ...newToDo }
+
+        if (value === '') return
+
+        let date = new Date(value)
+        toDo['date'] = value
+        toDo['dueDate'] = date
+
+        setNewToDo(toDo)
+
     }
 
     const updateHandler = ({ updatedToDo, item, action }) => {
@@ -48,51 +61,63 @@ const ViewUI = () => {
         setSearch(value)
     }
 
+    const onModalHide = () => {
+        setNewToDo({ task: '', description: '', dueDate: '', date: '' })
+        setShowModal(false)
+    }
+
     return (
-        <div>
-            <div className="row">
-                <div className="col-md-1" />
-                <div className="col-md-10">
+        <Fragment>
+            <Row>
+                <Col md='1' />
+                <Col md='10'>
+                    <Row className="pb-4">
+                        <Col md='10'><h4>To Do List</h4></Col>
+                        <Col md='2'>
+                            <Button variant="primary" size='sm' onClick={() => setShowModal(true)} style={{ float: 'right' }}>
+                                Add To Do
+                            </Button>
+                        </Col>
+                    </Row>
 
-                    <div className="row pb-4">
-                        <div className="col-md-10">
-                            <h4>To Do List</h4>
-                        </div>
-                        <div className="col-md-2 text-right">
-                            <button className="btn btn-primary float-right btn-sm btn-block" onClick={() => setShowModal(true)}>Add To Do</button>
-                        </div>
-
-                    </div>
-
-                    <div className="row">
-                        <div className="col-md-5">
-                            <InputGroup size="sm" className="mb-3" onChange={searchHandler}>
-                                <FormControl value={search} aria-label="Small" aria-describedby="search" />
-                                <InputGroup.Text id="search">Small</InputGroup.Text>
+                    <Row>
+                        <Col md='6' className="mb-2">
+                            <InputGroup size="sm" onChange={searchHandler}>
+                                <FormControl
+                                    placeholder="Search To Do"
+                                    value={search}
+                                    aria-label="Small"
+                                    aria-describedby="search"
+                                    style={{ borderRadius: '20px 0 0 20px' }}
+                                />
+                                <InputGroup.Text id="search" style={{ borderRadius: '0 20px 20px 0' }}>
+                                    <i class="fas fa-search" />
+                                </InputGroup.Text>
                             </InputGroup>
-                        </div>
-                    </div>
+                        </Col>
+                    </Row>
 
-                    <div className="row pb-4 pt-2" style={{ borderBottom: '1px solid #CCC' }}>
-                        <div className="col-md-12">
+                    <Row className="pb-4 pt-2" style={{ borderBottom: '1px solid #CCC' }}>
+                        <Col md='12'>
                             <ToDoList
                                 toDoList={toDoList}
                                 search={search}
                                 updateToDo={updateHandler}
                             />
-                        </div>
-                    </div>
+                        </Col>
+                    </Row>
 
-                    <div className="row py-4">
-                        <div className="col-md-12"><CompletedToDo completedToDo={completedList} /></div>
-                    </div>
-                </div>
-            </div>
+                    <Row className="py-4">
+                        <Col><CompletedToDo completedToDo={completedList} /></Col>
+                    </Row>
+                </Col>
+            </Row>
+
 
             <Modal
                 size='lg'
                 show={showModal}
-                onHide={() => setShowModal(false)}
+                onHide={onModalHide}
                 backdrop="static"
                 keyboard={false}
                 centered
@@ -101,8 +126,12 @@ const ViewUI = () => {
                 <Modal.Body>
                     <Form>
                         <Form.Group className="mb-3" controlId="task">
-                            <Form.Label>Task</Form.Label>
+                            <Form.Label>Task <span className="text-danger">*</span></Form.Label>
                             <Form.Control type="text" placeholder="Task" value={newToDo.task} onChange={fieldHandler} />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="dueDate" onChange={dateHandler}>
+                            <Form.Label>Due Date <span className="text-danger">*</span></Form.Label>
+                            <Form.Control type="date" value={newToDo.date} />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="description">
                             <Form.Label>Description</Form.Label>
@@ -111,11 +140,11 @@ const ViewUI = () => {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowModal(false)}>Close</Button>
-                    <Button variant="primary" onClick={addToDoHandler}>Add</Button>
+                    <Button variant="secondary" onClick={onModalHide}>Close</Button>
+                    <Button disabled={!(newToDo.task && newToDo.date)} variant="primary" onClick={addToDoHandler}>Add</Button>
                 </Modal.Footer>
             </Modal>
-        </div>
+        </Fragment>
     )
 }
 

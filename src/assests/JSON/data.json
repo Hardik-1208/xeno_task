@@ -3,40 +3,40 @@
         {
             "task": "Review Journey Builder UI",
             "description": "Review Journey builder UI with Deekshitha",
-            "dueDate" : "21-07-2021"
+            "dueDate" : "2021-07-22 14:00"
         },
         {
             "task": "Weekly Scrum",
             "description": "Weekly 1 hour scrum with the Tech, Production and UI team",
-            "dueDate" : "21-07-2021"
+            "dueDate" : "2021-07-23 18:00"
         },
         {
             "task": "User Interview",
             "description": "Have to conduct user interview understanding how can we improve our dashboard.",
-            "dueDate" : "21-07-2021"
+            "dueDate" : "2021-07-23 14:00"
         }
     ],
 
     "initialCompleteList": [
         {
             "task": "Prepare Roadmap",
-            "completionDate": "18-07-2021"
+            "completionDate": "2021-07-18"
         },
         {
             "task": "Create High Fidelity for Campaign Manager",
-            "completionDate": "18-07-2021"
+            "completionDate": "2021-07-18"
         },
         {
             "task": "Brainstrom meeting",
-            "completionDate": "17-07-2021"
+            "completionDate": "2021-07-17"
         },
         {
             "task": "User Testing for Journeys",
-            "completionDate": "17-07-2021"
+            "completionDate": "2021-07-17"
         },
         {
             "task": "One on One with Vishal",
-            "completionDate": "16-07-2021"
+            "completionDate": "2021-07-16"
         }
     ]
 }
